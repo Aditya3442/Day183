@@ -1,0 +1,33 @@
+class Solution {
+    int countPartitions(int[] arr, int d) {
+        // code here
+        int mod = (int)(1e9 + 7);
+        int n = arr.length;
+        int sum = 0;
+        for(int i : arr)
+            sum += i;
+        int target = (sum - d) / 2;
+        if(sum - d < 0 || (sum - d )% 2 == 1) return 0;
+        
+        int[][] dp = new int[n][target + 1];
+        
+        if(arr[0] == 0)
+           dp[0][0] = 2;
+        else
+           dp[0][0] = 1;
+        if(arr[0] <= target && arr[0] > 0)
+            dp[0][arr[0]] = 1;
+        for(int i = 1; i < n; i++) {
+            for(int j = 0; j <= target; j++) {
+                int take = 0;
+                if(j >= arr[i])
+                  take = dp[i - 1][j - arr[i]];
+                int notTake = dp[i - 1][j];
+                
+                dp[i][j] = (take + notTake) % mod;
+            }
+        }
+        return dp[n - 1][target];
+        
+    }
+}
