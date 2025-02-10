@@ -1,0 +1,28 @@
+class Solution {
+    // Function to return max value that can be put in knapsack of capacity.
+    static int knapSack(int capacity, int val[], int wt[]) {
+        // code here
+        int n = val.length;
+        int[][] dp = new int[n][capacity + 1];
+        
+        for(int cap = 0; cap <= capacity; cap++) {
+            if(cap >= wt[0])
+               dp[0][cap] = val[0];
+            else
+               dp[0][cap] = 0;
+        }
+        
+        for(int index = 1; index < n; index++){
+            for(int cap = 0; cap <= capacity; cap++){
+                int notTake = dp[index - 1][cap];
+                int take = 0;
+                if(cap >= wt[index]){
+                  take = val[index] + dp[index - 1][cap - wt[index]];
+                }
+                dp[index][cap] = Math.max(notTake , take);
+            }
+        }
+            
+        return dp[n - 1][capacity];
+    }
+}
